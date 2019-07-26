@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:aop="http://www.springframework.org/schema/aop"
+       xmlns:context="http://www.springframework.org/schema/context"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd http://www.springframework.org/schema/aop https://www.springframework.org/schema/aop/spring-aop.xsd http://www.springframework.org/schema/context https://www.springframework.org/schema/context/spring-context.xsd">
+
+    <bean name="source" class="pojo.Source">
+        <constructor-arg index="0" value=""/>
+        <constructor-arg index="1" value=""/>
+        <constructor-arg index="2" value=""/>
+        <property name="fruit" value="橙子"/>
+        <property name="sugar" value="多糖"/>
+        <property name="size" value="超大杯"/>
+    </bean>
+
+    <bean name="juickMaker" class="pojo.JuiceMaker">
+        <constructor-arg ref="source"/>
+        <property name="source" ref="source" />
+    </bean>
+
+    <bean name="productService" class="service.ProductService" />
+    <bean name="landlord" class="service.impl.SQLLiteServiceImpl"/>
+
+    <bean id="loggerAspect" class="aspect.LoggerAspect"/>
+
+    <!-- 配置AOP -->
+    <aop:config>
+        <!-- where：在哪些地方（包.类.方法）做增加 -->
+        <aop:pointcut id="loggerCutpoint"
+                      expression="execution(* service.SQLLiteService.*(..)) "/>
+
+        <!-- what:做什么增强 -->
+        <aop:aspect id="logAspect" ref="loggerAspect">
+            <!-- when:在什么时机（方法前/后/前后） -->
+            <aop:around pointcut-ref="loggerCutpoint" method="log"/>
+        </aop:aspect>
+    </aop:config>
+</beans>
