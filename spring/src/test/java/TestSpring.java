@@ -1,115 +1,75 @@
+import config.SpringConfig;
 import org.junit.Test;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.AnnotationConfigApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
-import pojo.*;
-import service.ProductService;
-import service.SQLLiteService;
-import service.SpringConfig;
-import service.StudentServiceImp;
-import service.impl.SQLLiteServiceImpl;
+import pojo.Landlord;
+import pojo.Student;
+import pojo.Student2;
+import pojo.Student3;
 
 public class TestSpring {
 
-    @Test
-    public void test() {
-        ApplicationContext context = new ClassPathXmlApplicationContext(
-                new String[]{"applicationContext.xml"}
-        );
-
-        Source source = (Source) context.getBean("source");
-
-        System.out.println(source.getFruit());
-        System.out.println(source.getSugar());
-        System.out.println(source.getSize());
-    }
+    @Autowired
+    Landlord landlord = null;
 
     @Test
-    public void test2() {
-        ApplicationContext context = new ClassPathXmlApplicationContext(
-                new String[]{"applicationContext.xml"}
-        );
+    public void test1(){
 
-        Source source = (Source) context.getBean("source");
-        System.out.println(source.getFruit());
-        System.out.println(source.getSugar());
-        System.out.println(source.getSize());
-
-        JuiceMaker juiceMaker = (JuiceMaker) context.getBean("juickMaker");
-        System.out.println(juiceMaker.makeJuice());
-    }
-
-    @Test
-    public void test3() {
-        ApplicationContext context = new ClassPathXmlApplicationContext(
-                new String[]{"applicationContext.xml"}
-        );
-        ProductService productService = (ProductService) context.getBean("productService");
-        productService.doSomeService();
-
-    }
-
-    @Test
-    public void test4() {
-        //ApplicationContext context = new ClassPathXmlApplicationContext( new String[]{"applicationContext.xml"} );
         ApplicationContext context = new ClassPathXmlApplicationContext("applicationContext.xml");
-
-        Source source = (Source) context.getBean("source");
-        System.out.println(source.getFruit());
-        System.out.println(source.getSugar());
-        System.out.println(source.getSize());
+        Landlord landlord = (Landlord) context.getBean("landlord", Landlord.class);
+        landlord.service();
     }
 
     @Test
-    public void test5() {
+    public void test2(){
 
-        AnnotationConfigApplicationContext applicationContext
-                = new AnnotationConfigApplicationContext(AppConfig.class);
-        Source source = (Source) applicationContext.getBean("source");
-        System.out.println(source.getFruit());
-        System.out.println(source.getSugar());
-        System.out.println(source.getSize());
+        // 通过注解的方式初始化 Spring IoC 容器
+        ApplicationContext context = new AnnotationConfigApplicationContext(SpringConfig.class);
+        Landlord landlord = context.getBean("landlord", Landlord.class);
+        landlord.service();
     }
 
+
+    //BeanTest1
     @Test
-    public void test6() {
-        ApplicationContext context = new AnnotationConfigApplicationContext(AppConfig.class);
+    public void BeanTest1(){
+
+        ApplicationContext context = new ClassPathXmlApplicationContext("applicationContext.xml");
         Student student = (Student) context.getBean("student", Student.class);
-        System.out.println(student.getId());
-        System.out.println(student.getName());
+        System.out.println(student.toString());
     }
 
+    //BeanTest2
     @Test
-    public void test7() {
-        ApplicationContext context = new AnnotationConfigApplicationContext(AppConfig.class);
-        Message message = (Message) context.getBean("message", Message.class);
-        System.out.println(message.getAge());
-        System.out.println(message.getName());
-    }
+    public void BeanTest2(){
 
-
-    @Test
-    public void test8() {
-        ApplicationContext context = new AnnotationConfigApplicationContext(SpringConfig.class);
-        Message message = (Message) context.getBean("message", Message.class);
-        System.out.println(message.getAge());
-        System.out.println(message.getName());
-    }
-
-    @Test
-    public void test9() {
-        ApplicationContext context = new AnnotationConfigApplicationContext(SpringConfig.class);
-        StudentServiceImp studentServiceImp = (StudentServiceImp) context.getBean("studentService", StudentServiceImp.class);
-        studentServiceImp.printStudentInfo();
-    }
-
-
-    @Test
-    public void test10() {
-//        ApplicationContext context = new AnnotationConfigApplicationContext(SpringConfig.class);
         ApplicationContext context = new ClassPathXmlApplicationContext("applicationContext.xml");
-        SQLLiteService SQLLiteService = (SQLLiteService) context.getBean("landlord", SQLLiteService.class);
-        SQLLiteService.insertService();
+        Student2 student2 = (Student2) context.getBean("student2", Student2.class);
+        System.out.println(student2.toString());
+    }
+
+    //BeanTest3
+    @Test
+    public void BeanTest3(){
+
+        ApplicationContext context = new ClassPathXmlApplicationContext("applicationContext.xml");
+        Student3 student3 = (Student3) context.getBean("student3", Student3.class);
+        System.out.println("Name : " + student3.getName() );
+        System.out.println("Age : " + student3.getAge() );
+
+    }
+
+    //BeanTest3
+    @Test
+    public void BeanTest4(){
+        ApplicationContext context =
+                new ClassPathXmlApplicationContext("applicationContext.xml");
+        com.tutorialspoint.Student student = (com.tutorialspoint.Student) context.getBean("student4");
+        student.getName();
+        student.getAge();
+        student.printThrowException();
     }
 }
 
