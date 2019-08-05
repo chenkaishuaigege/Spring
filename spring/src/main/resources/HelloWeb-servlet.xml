@@ -20,4 +20,14 @@
     <mvc:resources mapping="/pages/**" location="/WEB-INF/pages/" />
     <mvc:annotation-driven/>
 
+    <!-- Definition for student bean -->
+    <bean id="student" class="com.tutorialspoint.Student">
+        <property name="name"  value="Zara22" />
+        <property name="age"  value="1133"/>
+    </bean>
+
+<!--    &lt;!&ndash; Definition for logging aspect &ndash;&gt;-->
+<!--    <bean id="logging" class="com.tutorialspoint.Logging"/>-->
+
+
 </beans>

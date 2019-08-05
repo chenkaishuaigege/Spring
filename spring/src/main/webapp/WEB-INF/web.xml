@@ -6,11 +6,21 @@
 
     <display-name>Spring Page Redirection</display-name>
 
+
+    <!-- servlet定义：前端处理器，接受的HTTP请求和转发请求的类 -->
     <servlet>
         <servlet-name>HelloWeb</servlet-name>
         <servlet-class>
             org.springframework.web.servlet.DispatcherServlet
         </servlet-class>
+
+        <init-param>
+            <!-- court-servlet.xml：定义WebAppliactionContext上下文中的bean -->
+            <param-name>contextConfigLocation</param-name>
+            <param-value>classpath*:HelloWeb-servlet.xml</param-value>
+        </init-param>
+
+
         <load-on-startup>1</load-on-startup>
     </servlet>
 
@@ -23,5 +33,16 @@
         <servlet-name>default</servlet-name>
         <url-pattern>*.ico</url-pattern>
     </servlet-mapping>
+
+    <!-- 配置contextConfigLocation初始化参数：指定Spring IoC容器需要读取的定义了非web层的Bean（DAO/Service）的XML文件路径 -->
+    <context-param>
+        <param-name>contextConfigLocation</param-name>
+        <param-value>classpath*:HelloWeb-servlet.xml</param-value>
+    </context-param>
+
+    <!-- 配置ContextLoaderListerner：Spring MVC在Web容器中的启动类，负责Spring IoC容器在Web上下文中的初始化 -->
+    <listener>
+        <listener-class>org.springframework.web.context.ContextLoaderListener</listener-class>
+    </listener>
 
 </web-app>

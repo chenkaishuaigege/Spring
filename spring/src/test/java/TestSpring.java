@@ -61,12 +61,12 @@ public class TestSpring {
 //
 //    }
 //
-//    //BeanTest3
+    //BeanTest3
 //    @Test
 //    public void BeanTest4(){
 //        ApplicationContext context =
-//                new ClassPathXmlApplicationContext("applicationContext.xml");
-//        com.tutorialspoint.Student student = (com.tutorialspoint.Student) context.getBean("student4");
+//                new ClassPathXmlApplicationContext("HelloWeb-servlet.xml");
+//        com.tutorialspoint.Student student = (com.tutorialspoint.Student) context.getBean("student");
 //        student.getName();
 //        student.getAge();
 //        student.printThrowException();

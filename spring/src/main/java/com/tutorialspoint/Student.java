@@ -24,5 +24,11 @@ public class Student {
         throw new IllegalArgumentException();
     }
 
-
+    @Override
+    public String toString() {
+        return "Student{" +
+                "age=" + age +
+                ", name='" + name + '\'' +
+                '}';
+    }
 }

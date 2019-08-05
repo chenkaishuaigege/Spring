@@ -18,6 +18,8 @@ public class WebController {
     public String index() {
         return "index";
     }
+
+
     @RequestMapping(value = "/staticPage", method = RequestMethod.GET)
     public String redirect() {
         return "redirect:/pages/final.htm";
