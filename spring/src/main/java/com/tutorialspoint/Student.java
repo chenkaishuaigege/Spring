@@ -1,5 +1,8 @@
 package com.tutorialspoint;
 
+
+import org.springframework.context.annotation.Bean;
+
 public class Student {
 
 

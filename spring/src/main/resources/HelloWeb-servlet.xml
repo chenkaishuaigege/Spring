@@ -10,7 +10,7 @@
  http://www.springframework.org/schema/context
  http://www.springframework.org/schema/context/spring-context-3.0.xsd">
 
-    <context:component-scan base-package="com.tutorialspoint" />
+    <context:component-scan base-package="com" />
 
     <bean id="viewResolver" class="org.springframework.web.servlet.view.InternalResourceViewResolver">
         <property name="prefix" value="/WEB-INF/jsp/" />
@@ -25,6 +25,17 @@
         <property name="name"  value="Zara22" />
         <property name="age"  value="1133"/>
     </bean>
+    <!--//此处根据自己的包进行配置-->
+    <bean class="Dumber.DumberRequestHandlerMapping">
+        <property name="order" value="0" />
+    </bean>
+
+    <mvc:interceptors>
+        <bean class="Dumber.ControllerInterceptor" />
+    </mvc:interceptors>
+
+
+
 
 <!--    &lt;!&ndash; Definition for logging aspect &ndash;&gt;-->
 <!--    <bean id="logging" class="com.tutorialspoint.Logging"/>-->

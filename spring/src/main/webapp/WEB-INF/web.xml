@@ -24,14 +24,35 @@
         <load-on-startup>1</load-on-startup>
     </servlet>
 
+
+    <servlet>
+        <servlet-name>HelloWorld</servlet-name>
+        <servlet-class>com.servletDemo.HelloServletDemo</servlet-class>
+    </servlet>
+
     <servlet-mapping>
-        <servlet-name>HelloWeb</servlet-name>
-        <url-pattern>/</url-pattern>
+        <servlet-name>HelloWorld</servlet-name>
+        <url-pattern>/HelloWorld</url-pattern>
     </servlet-mapping>
 
     <servlet-mapping>
-        <servlet-name>default</servlet-name>
-        <url-pattern>*.ico</url-pattern>
+        <servlet-name>HelloWeb</servlet-name>
+        <url-pattern>*.do</url-pattern>
+    </servlet-mapping>
+
+    <servlet-mapping>
+        <servlet-name>HelloWeb</servlet-name>
+        <url-pattern>*.v</url-pattern>
+    </servlet-mapping>
+
+    <servlet-mapping>
+        <servlet-name>HelloWeb</servlet-name>
+        <url-pattern>*.m</url-pattern>
+    </servlet-mapping>
+
+    <servlet-mapping>
+        <servlet-name>HelloWeb</servlet-name>
+        <url-pattern>/</url-pattern>
     </servlet-mapping>
 
     <!-- 配置contextConfigLocation初始化参数：指定Spring IoC容器需要读取的定义了非web层的Bean（DAO/Service）的XML文件路径 -->
@@ -44,5 +65,10 @@
     <listener>
         <listener-class>org.springframework.web.context.ContextLoaderListener</listener-class>
     </listener>
+    <listener>
+        <listener-class>org.springframework.web.context.request.RequestContextListener</listener-class>
+    </listener>
+
+
 
 </web-app>
