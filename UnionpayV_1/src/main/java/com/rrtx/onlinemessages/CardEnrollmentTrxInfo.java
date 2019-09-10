@@ -1,8 +1,8 @@
 package com.rrtx.onlinemessages;
 
 
+import com.rrtx.dataobject.CvmInfo;
 import com.rrtx.util.JWTUtil;
-import com.rrtx.util.JavaUtil;
 import com.rrtx.util.SerializeUtil;
 import java.io.Serializable;
 
@@ -20,7 +20,6 @@ public class CardEnrollmentTrxInfo implements Serializable {
     String cvmInfo;
     String token;
     String tokenExpiry;
-    // TODO 需要解密
     String pan;
     String panExpiry;
     String maskedPan;
@@ -39,15 +38,15 @@ public class CardEnrollmentTrxInfo implements Serializable {
             /**
              * 添加默认值,当创建实体类的时候不set值时,会使用默认值
              */
-            if (JavaUtil.isEmpty(deviceID)) {
-                cardEnrollmentTrxInfo.setDeviceID(deviceID);
-            }
-            if (JavaUtil.isEmpty(userID)) {
-                cardEnrollmentTrxInfo.setUserID(userID);
-            }
-            if (JavaUtil.isEmpty(cvmInfo)) {
-                cardEnrollmentTrxInfo.setCvmInfo(cvmInfo);
-            }
+//            if (JavaUtil.isEmpty(deviceID)) {
+//                cardEnrollmentTrxInfo.setDeviceID(deviceID);
+//            }
+//            if (JavaUtil.isEmpty(userID)) {
+//                cardEnrollmentTrxInfo.setUserID(userID);
+//            }
+//            if (JavaUtil.isEmpty(cvmInfo)) {
+//                cardEnrollmentTrxInfo.setCvmInfo(cvmInfo);
+//            }
             return cardEnrollmentTrxInfo;
         }
 
@@ -61,7 +60,7 @@ public class CardEnrollmentTrxInfo implements Serializable {
             cardEnrollmentTrxInfo.setUserID(userID_);
             return this;
         }
-        public Builder setCvmInfo(String cvmInfo_) {
+        public Builder setCvmInfo(CvmInfo cvmInfo_) {
             String cvmInfoStr = SerializeUtil.serialize(cvmInfo_);
             String cvmInfoStrEnc = JWTUtil.jweEncryption(cvmInfoStr);
             cardEnrollmentTrxInfo.setCvmInfo(cvmInfoStrEnc);

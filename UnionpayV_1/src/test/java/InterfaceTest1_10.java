@@ -88,11 +88,13 @@ public class InterfaceTest1_10 {
     public void CardEnrollmentTest() throws Exception {
         // MsgInfo公共报文
         MsgInfo msgInfo = new MsgInfo().builder().setMsgType("CARD_ENROLLMENT").createEntity();
+        // CvmInfo报文
+        CvmInfo cvmInfo = new CvmInfo().builder().setFirstName("chen").setLastName("kai").setIdType("ID card").setIdNo("1234567890").setIdCountry("CHN").createEntity();
         // trxInfo交易信息
         CardEnrollmentTrxInfo trxInfo = new CardEnrollmentTrxInfo().builder()
                 .setDeviceID("1b5ddc2562a8de5b4e175d418f5b7edf")
                 .setUserID("3329941324335104")
-                .setCvmInfo("123123")
+                .setCvmInfo(cvmInfo)
                 .createEntity();
         // 调用service服务
         Map map = new UnionPayServiceImpl().unionPayService(msgInfo, trxInfo);

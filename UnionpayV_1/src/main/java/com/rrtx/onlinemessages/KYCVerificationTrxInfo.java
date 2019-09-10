@@ -35,12 +35,12 @@ public class KYCVerificationTrxInfo implements Serializable {
             /**
              * 添加默认值,当创建实体类的时候不set值时,会使用默认值
              */
-            if (JavaUtil.isEmpty(deviceID)) {
-                KYCVerificationTrxInfo.setDeviceID(deviceID);
-            }
-            if (JavaUtil.isEmpty(userID)) {
-                KYCVerificationTrxInfo.setUserID(userID);
-            }
+//            if (JavaUtil.isEmpty(deviceID)) {
+//                KYCVerificationTrxInfo.setDeviceID(deviceID);
+//            }
+//            if (JavaUtil.isEmpty(userID)) {
+//                KYCVerificationTrxInfo.setUserID(userID);
+//            }
             return KYCVerificationTrxInfo;
 
         }
