@@ -1,3 +1,4 @@
+import com.rrtx.dataobject.CvmInfo;
 import com.rrtx.dataobject.EncCertId;
 import com.rrtx.dataobject.MsgInfo;
 import com.rrtx.dataobject.MsgResponse;
@@ -21,7 +22,7 @@ public class InterfaceTest1_10 {
         CVMInquiryTrxInfo trxInfo = new CVMInquiryTrxInfo().builder().createEntity();
         // 调用service服务
         Map map = new UnionPayServiceImpl().unionPayService(msgInfo, trxInfo);
-        printMehod(map);
+        printMethod(map);
     }
 
     /**
@@ -34,15 +35,26 @@ public class InterfaceTest1_10 {
     public void KYCVerificationTest() throws Exception {
         // MsgInfo公共报文
         MsgInfo msgInfo = new MsgInfo().builder().setMsgType("KYC_VERIFICATION").createEntity();
+        // CvmInfo报文
+        CvmInfo cvmInfo = new CvmInfo().builder().setFirstName("chen").setLastName("kai").setIdType("ID card").setIdNo("1234567890").setIdCountry("CHN").createEntity();
         // trxInfo交易信息
         KYCVerificationTrxInfo trxInfo = new KYCVerificationTrxInfo().builder()
                 .setDeviceID("1b5ddc2562a8de5b4e175d418f5b7edf")
                 .setUserID("3329941324335104")
-                .setCvmInfo("123121233123")
+                .setCvmInfo(cvmInfo)
                 .createEntity();
         // 调用service服务
         Map map = new UnionPayServiceImpl().unionPayService(msgInfo, trxInfo);
-        printMehod(map);
+        MsgInfo msgInfoReturn = (MsgInfo) map.get("msgInfo");
+        MsgResponse msgResponseReturn = (MsgResponse) map.get("msgResponse");
+        System.out.println(msgInfoReturn.getMsgType());
+        System.out.println(msgInfoReturn.getInsID());
+        System.out.println(msgInfoReturn.getMsgID());
+        System.out.println(msgInfoReturn.getTimeStamp());
+        System.out.println(msgInfoReturn.getVersionNo());
+        System.out.println(msgResponseReturn.getResponseCode());
+        System.out.println(msgResponseReturn.getResponseMsg());
+        printMethod(map);
     }
 
 
@@ -64,7 +76,7 @@ public class InterfaceTest1_10 {
                                                             .createEntity();
         // 调用service服务
         Map map = new UnionPayServiceImpl().unionPayService(msgInfo, trxInfo);
-        printMehod(map);
+        printMethod(map);
     }
 
     /**
@@ -84,7 +96,7 @@ public class InterfaceTest1_10 {
                 .createEntity();
         // 调用service服务
         Map map = new UnionPayServiceImpl().unionPayService(msgInfo, trxInfo);
-        printMehod(map);
+        printMethod(map);
     }
 
     /**
@@ -101,7 +113,7 @@ public class InterfaceTest1_10 {
                 .createEntity();
         // 调用service服务
         Map map = new UnionPayServiceImpl().unionPayService(msgInfo, trxInfo);
-        printMehod(map);
+        printMethod(map);
     }
 
     /**
@@ -118,7 +130,7 @@ public class InterfaceTest1_10 {
                 .createEntity();
         // 调用service服务
         Map map = new UnionPayServiceImpl().unionPayService(msgInfo, trxInfo);
-        printMehod(map);
+        printMethod(map);
     }
 
 
@@ -138,7 +150,7 @@ public class InterfaceTest1_10 {
                 .createEntity();
         // 调用service服务
         Map map = new UnionPayServiceImpl().unionPayService(msgInfo, trxInfo);
-        printMehod(map);
+        printMethod(map);
     }
     /**
      * Card Status Notification 2.8  SCIS调用APPGW
@@ -160,7 +172,7 @@ public class InterfaceTest1_10 {
                 .createEntity();
         // 调用service服务
         Map map = new UnionPayServiceImpl().unionPayService(msgInfo, trxInfo);
-        printMehod(map);
+        printMethod(map);
     }
 
     /**
@@ -175,10 +187,10 @@ public class InterfaceTest1_10 {
                 .createEntity();
         // 调用service服务
         Map map = new UnionPayServiceImpl().unionPayService(msgInfo, trxInfo);
-        printMehod(map);
+        printMethod(map);
     }
 
-    private static void printMehod(Map map ) throws Exception {
+    private static void printMethod(Map map ) throws Exception {
         System.out.println("---------------------返回信息----------------------");
         Object trxInfo2 = map.get("trxInfo");
         MsgResponse msgResponse2 = (MsgResponse) map.get("msgResponse");

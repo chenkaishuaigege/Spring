@@ -25,21 +25,17 @@ public class ProConst {
 	 *            要获取的键
 	 * @return
 	 */
-	public static String getValue(String key) throws IOException {
+	public static String getValue(String key){
+		try {
 		if (pps == null) {
 				pps = new Properties();
-
-				final String PATH = ProConst.class.getResource("/").getPath() + "/configuration.properties";
-
+				final String PATH = "/Users/chenkai/IdeaProjects/Spring/UnionpayV_1/src/main/resources/configuration.properties";
 				pps.load(new FileInputStream(PATH));
+		}
+		} catch (IOException e) {
+			e.printStackTrace();
 		}
 		return pps.getProperty(key);
 	}
 
-	public static void main(String[] args) throws IOException {
-		String fsadf = getValue("union_cert_publicKey");
-		System.out.println(fsadf);
-		String fsadf2 = getValue("union_cert_publicKey");
-		System.out.println(fsadf2);
-	}
 }

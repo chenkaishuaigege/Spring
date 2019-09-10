@@ -14,7 +14,7 @@ public interface IUnionPayService extends IFAPLocalService {
      * @return
      * @throws FAPBusinessException
      */
-    Map unionPayService(MsgInfo msgInfo ,Object trxInfo) throws FAPBusinessException, IOException;
+    Map unionPayService(MsgInfo msgInfo ,Object trxInfo) throws Exception;
 
 
 }

@@ -1,7 +1,10 @@
 package com.rrtx.onlinemessages;
 
 
+import com.rrtx.dataobject.CvmInfo;
+import com.rrtx.util.JWTUtil;
 import com.rrtx.util.JavaUtil;
+import com.rrtx.util.SerializeUtil;
 import com.rrtx.util.SignUtil;
 
 import java.io.Serializable;
@@ -42,9 +45,6 @@ public class KYCVerificationTrxInfo implements Serializable {
             if (JavaUtil.isEmpty(userID)) {
                 KYCVerificationTrxInfo.setUserID(userID);
             }
-            if (JavaUtil.isEmpty(cvmInfo)) {
-                KYCVerificationTrxInfo.setCvmInfo(cvmInfo);
-            }
             return KYCVerificationTrxInfo;
 
         }
@@ -59,9 +59,10 @@ public class KYCVerificationTrxInfo implements Serializable {
             KYCVerificationTrxInfo.setUserID(userID_);
             return this;
         }
-        public Builder setCvmInfo(String cvmInfo_) {
-            cvmInfo = SignUtil.sensitiveInformationEncrypt(cvmInfo_);
-            KYCVerificationTrxInfo.setCvmInfo(cvmInfo);
+        public Builder setCvmInfo(CvmInfo cvmInfo_) {
+            String cvmInfoStr = SerializeUtil.serialize(cvmInfo_);
+            String cvmInfoStrEnc = JWTUtil.jweEncryption(cvmInfoStr);
+            KYCVerificationTrxInfo.setCvmInfo(cvmInfoStrEnc);
             return this;
         }
 
@@ -75,8 +76,16 @@ public class KYCVerificationTrxInfo implements Serializable {
         this.userID = userID;
     }
 
-    private void setCvmInfo(String cvmInfo) {
+    public String getCvmInfo() {
+        return cvmInfo;
+    }
+
+    public void setCvmInfo(String cvmInfo) {
         this.cvmInfo = cvmInfo;
+    }
+
+    public void setReferNo(String referNo) {
+        this.referNo = referNo;
     }
 
     public String getDeviceID() {
@@ -85,10 +94,6 @@ public class KYCVerificationTrxInfo implements Serializable {
 
     public String getUserID() {
         return userID;
-    }
-
-    public String getCvmInfo() {
-        return cvmInfo;
     }
 
     public String getReferNo() {

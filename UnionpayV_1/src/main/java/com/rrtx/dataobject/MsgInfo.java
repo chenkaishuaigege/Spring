@@ -3,17 +3,21 @@ package com.rrtx.dataobject;
 
 import com.rrtx.util.JavaUtil;
 import java.io.Serializable;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+
+import static com.rrtx.encryption.UnionPaySingleton.getSingletonMethod;
 
 /**
  *
  */
 public class MsgInfo implements Serializable {
 
-    String versionNo;
+    String versionNo = "1.0.0";
     String msgID;
-    String timeStamp;
+    String timeStamp = new SimpleDateFormat("yyyyMMddHHmmss").format(Calendar.getInstance().getTime());
     String msgType;
-    String insID;
+    String insID = getSingletonMethod().getUpi_appid();;
 
     public Builder builder() {
         return new Builder();
@@ -24,27 +28,23 @@ public class MsgInfo implements Serializable {
         MsgInfo msgInfo = new MsgInfo();
 
         public MsgInfo createEntity() {
-
+            //如果为空,设置默认值
             if (JavaUtil.isEmpty(versionNo)) {
-                versionNo = "1.0.0";
                 msgInfo.setVersionNo(versionNo);
             }
             if (JavaUtil.isEmpty(msgID)) {
-                msgID = "A" + insID + "***Serial No";
+                msgID = "A" + insID + timeStamp;
                 msgInfo.setMsgID(msgID);
             }
             if (JavaUtil.isEmpty(timeStamp)) {
-                timeStamp = String.valueOf(System.currentTimeMillis() / 1000);
                 msgInfo.setTimeStamp(timeStamp);
             }
             if (JavaUtil.isEmpty(insID)) {
-                insID = "insID";
                 msgInfo.setInsID(insID);
             }
             if (JavaUtil.isEmpty(msgType)) {
                 msgInfo.setMsgType(msgType);
             }
-
             return msgInfo;
         }
 

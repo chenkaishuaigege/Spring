@@ -26,8 +26,8 @@ public class MainClass {
         String rsaAlgorithm = "RSA/ECB/PKCS1Padding";
 
         //公钥
-        publicKeyStr =  getPublicKeyInfo();
-        privateKeyStr = getPrivateKeyInfo();
+        publicKeyStr =  getPublicKeyInfo("");
+        privateKeyStr = getPrivateKeyInfo("" , "");
         System.out.println("publicKeyStr");
         System.out.println(publicKeyStr);
         System.out.println("privateKeyStr");

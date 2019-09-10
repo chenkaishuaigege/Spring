@@ -1,6 +1,9 @@
 package com.rrtx.service.impl;
 
 import cn.hutool.core.util.StrUtil;
+import cn.hutool.http.HttpResponse;
+import cn.hutool.json.JSONObject;
+import cn.hutool.json.JSONUtil;
 import com.rrtx.dataobject.EncCertId;
 import com.rrtx.dataobject.MsgInfo;
 import com.rrtx.dataobject.MsgResponse;
@@ -12,6 +15,8 @@ import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 
+import static com.rrtx.util.JWTUtil.jwsAttestation;
+
 public class UnionPayServiceImpl implements IUnionPayService {
 
     public static final String msgInfoConstant = "msgInfo";
@@ -22,37 +27,45 @@ public class UnionPayServiceImpl implements IUnionPayService {
 
 
     @Override
-    public Map unionPayService(MsgInfo msgInfo, Object trxInfo) throws FAPBusinessException {
+    public Map unionPayService(MsgInfo msgInfo, Object trxInfo) throws Exception {
 
         Map map = new HashMap();
         //实体类序列化
         String msgInfoSerialize = SerializeUtil.serialize(msgInfo);
         String trxInfoSerialize = SerializeUtil.serialize(trxInfo);
-
         //组装发送请求的MAP(key值需要和接口文档中对应)
         Map<String, Object> paramMap = new HashMap<>();
         paramMap.put(msgInfoConstant , msgInfoSerialize);
         paramMap.put(trxInfoConstant , trxInfoSerialize);
 
         //交易数据的 json字符串
-        String onlineMessage = JsonMapCoverUtill.coverMap2JsonString(paramMap);
+        //String onlineMessage = JsonMapCoverUtill.coverMap2JsonString(paramMap);
+
+        JSONObject jsonobject = JSONUtil.parseFromMap(paramMap);
+        String onlineMessage = jsonobject.toString();
+        onlineMessage = onlineMessage.replace("\"{" , "{");
+        onlineMessage = onlineMessage.replace("}\"" , "}");
+        onlineMessage = onlineMessage.replace("\\" , "");
         System.out.println("发送online message 信息:");
         System.out.println(onlineMessage);
-        //签名
+        //TODO 签名 constructSignedMethod方法需要去掉
         //String headerSign = SignUtil.constructSignedMethod(onlineMessage);
-        // TODO
-        String headerSign = JWTUtil.jwsSignature(onlineMessage);
-
+        String headerSign = JWTUtil.jwsSignatureNew(onlineMessage);
         //获取Service_URL_suffix
-        String service_URL_suffix = getServiceUrlSuffix(msgInfo.getMsgType());
+        String service_URL_suffix = ConversionUtil.msgTypeToUrlSuffix(msgInfo.getMsgType());
         if(StrUtil.isEmpty(service_URL_suffix)){
             return map;
         }
-        String resultMessage = HttpUtil.postMethod(service_URL_suffix , onlineMessage , headerSign);
-        // TODO 模拟返回信息
-        resultMessage = getResultMessage(msgInfo.getMsgType());
-        System.out.println("返回信息:");
+        HttpResponse response = HttpUtil.postMethod(service_URL_suffix, onlineMessage, headerSign);
+        String upi_jws = response.header("UPI-JWS");
+        String resultMessage = response.body();
+        System.out.println("scis返回信息------:");
         System.out.println(resultMessage);
+        // TODO 验签
+        //jwsAttestation(resultMessage , upi_jws);
+        // TODO 模拟返回信息
+        //resultMessage = getResultMessage(msgInfo.getMsgType());
+
         Map<String, Object> resultMap = JsonMapCoverUtill.coverJsonString2Map(resultMessage);
         if(resultMap.containsKey(msgInfoConstant)){
             MsgInfo msgInfoRes = (MsgInfo)SerializeUtil.deserialize(MsgInfo.class, resultMap.get(msgInfoConstant).toString());
@@ -73,59 +86,7 @@ public class UnionPayServiceImpl implements IUnionPayService {
         return map;
     }
 
-    /**
-     * 通过msgType获取url后缀
-     * @param msgType
-     * @return
-     */
-    public String getServiceUrlSuffix(String msgType) {
-        switch(msgType){
-            case "CVM_INQUIRY" :
-                return "/scis/switch/cvminquiry";
-            case "KYC_VERIFICATION" :
-                return "/scis/switch/kycverify";
-            case "OPEN_ACCOUNT" :
-                return "/scis/switch/openaccount";
-            case "CARD_ENROLLMENT" :
-                return "/scis/switch/cardenrollment";
-            case "CARDFACE_DOWNLOADING" :
-                return "/scis/switch/cardfacedownloading";
-            case "ACCOUNT_UPDATE_NOTIFICATION" :
-                return "/scis/switch/account_update_notification";
-            case "CARD_STATUS_MANAGEMENT" :
-                return "/scis/switch/cardstatusmgt";
-            case "CARD_STATUS_INQUIRY" :
-                return "/scis/switch/cardstatusinquiry";
-            case "CARD_BALANCE_INQUIRY" :
-                return "/scis/switch/cardbalanceinquiry";
-            case "EXCHANGE_RATE_INQUIRY" :
-                return "/scis/switch/exchangerateinquiry";
-            case "P2P_TRANSFER" :
-                return "/scis/switch/p2ptransfer";
-            case "QRC_GENERATION" :
-                return "/scis/switch/qrcgeneration";
-            case "ADDITIONAL_PROCESSING_RESULT" :
-                return "/scis/switch/additionalprocessingresult";
-            case "GET_CASH_OUT_TOKEN" :
-                return "/scis/switch/cashouttoken";
-            case "QRC_INFO_INQUIRY" :
-                return "/scis/switch/qrcinfoinquiry";
-            case "MPQRC_PAYMENT_EMV" :
-                return "/scis/switch/qremvpayment";
-            case "MPQRC_PAYMENT_URL" :
-                return "/scis/switch/qrurlpayment";
-            case "BILL_PAYMENT" :
-                return "/scis/switch/billpayment";
-            case "CREDIT_TRANSACTION" :
-                return "/scis/switch/credittransaction";
-            case "TRX_RESULT_INQUIRY" :
-                return "/scis/switch/trxresultinquiry";
-            case "KEY_EXCHANGE" :
-                return "/uags/api/v1/exchange";
-            default:
-                return "";
-        }
-    }
+
 
     public String getResultMessage(String msgType) {
         switch (msgType) {
