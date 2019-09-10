@@ -7,7 +7,8 @@ public class UnionPaySingleton {
     static String union_url;
     static String upi_appid;
     static String upi_certid;
-    static String kid;
+    static String kid_encryption;
+    static String kid_signature;
 
     static String scis_encryption_public_file;
     static String scis_attestation_public_file;
@@ -36,7 +37,8 @@ public class UnionPaySingleton {
             union_url = ProConst.getValue("union_url");
             upi_appid = ProConst.getValue("upi_appid");
             upi_certid = ProConst.getValue("upi_certid");
-            kid = ProConst.getValue("kid");
+            kid_encryption = ProConst.getValue("kid_encryption");
+            kid_signature = ProConst.getValue("kid_signature");
 
             unionPaySingleton = new UnionPaySingleton();
             unionPaySingleton.setScis_encryption_public_file(scis_encryption_public_file);
@@ -48,7 +50,8 @@ public class UnionPaySingleton {
             unionPaySingleton.setUnion_url(union_url);
             unionPaySingleton.setUpi_appid(upi_appid);
             unionPaySingleton.setUpi_certid(upi_certid);
-            unionPaySingleton.setKid(kid);
+            unionPaySingleton.setKid_encryption(kid_encryption);
+            unionPaySingleton.setKid_signature(kid_signature);
         }
     }
 
@@ -132,18 +135,20 @@ public class UnionPaySingleton {
         UnionPaySingleton.getway_signature_private_str = getway_signature_private_str;
     }
 
-    public String getKid() {
-        return kid;
+    public String getKid_encryption() {
+        return kid_encryption;
     }
 
-    private void setKid(String kid) {
-        UnionPaySingleton.kid = kid;
+    public void setKid_encryption(String kid_encryption) {
+        UnionPaySingleton.kid_encryption = kid_encryption;
     }
 
-    public static void main(String[] args) {
-        String sdfsd = getSingletonMethod().getKid();
-        System.out.println(sdfsd);
-        String sdf22sd = getSingletonMethod().getKid();
-        System.out.println(sdf22sd);
+    public String getKid_signature() {
+        return kid_signature;
     }
+
+    public void setKid_signature(String kid_signature) {
+        UnionPaySingleton.kid_signature = kid_signature;
+    }
+
 }

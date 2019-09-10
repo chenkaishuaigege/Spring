@@ -5,11 +5,7 @@ import com.rrtx.dataobject.CvmInfo;
 import com.rrtx.util.JWTUtil;
 import com.rrtx.util.JavaUtil;
 import com.rrtx.util.SerializeUtil;
-import com.rrtx.util.SignUtil;
-
 import java.io.Serializable;
-import java.util.HashMap;
-import java.util.Map;
 
 /**
  * @author chenkai
