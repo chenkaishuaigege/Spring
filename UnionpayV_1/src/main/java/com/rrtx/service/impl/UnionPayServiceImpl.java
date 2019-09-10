@@ -14,6 +14,7 @@ import com.rrtx.util.*;
 
 import java.io.IOException;
 import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.Map;
 
 import static com.rrtx.util.JWTUtil.jwsAttestation;
@@ -34,22 +35,17 @@ public class UnionPayServiceImpl implements IUnionPayService {
         String msgInfoSerialize = SerializeUtil.serialize(msgInfo);
         String trxInfoSerialize = SerializeUtil.serialize(trxInfo);
         //组装发送请求的MAP(key值需要和接口文档中对应)
-        Map<String, Object> paramMap = new HashMap<>();
+        Map<String, Object> paramMap = new LinkedHashMap<>();
         paramMap.put(msgInfoConstant , msgInfoSerialize);
         paramMap.put(trxInfoConstant , trxInfoSerialize);
-
         //交易数据的 json字符串
-        //String onlineMessage = JsonMapCoverUtill.coverMap2JsonString(paramMap);
-
-        JSONObject jsonobject = JSONUtil.parseFromMap(paramMap);
-        String onlineMessage = jsonobject.toString();
+        String onlineMessage = JSONUtil.parseFromMap(paramMap).toString();
         onlineMessage = onlineMessage.replace("\"{" , "{");
         onlineMessage = onlineMessage.replace("}\"" , "}");
         onlineMessage = onlineMessage.replace("\\" , "");
         System.out.println("发送online message 信息:");
         System.out.println(onlineMessage);
-        //TODO 签名 constructSignedMethod方法需要去掉
-        //String headerSign = SignUtil.constructSignedMethod(onlineMessage);
+        //签名
         String headerSign = JWTUtil.jwsSignature(onlineMessage);
         //获取Service_URL_suffix
         String service_URL_suffix = ConversionUtil.msgTypeToUrlSuffix(msgInfo.getMsgType());
